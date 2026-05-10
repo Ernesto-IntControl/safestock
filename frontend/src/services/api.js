@@ -43,6 +43,12 @@ export const alertService = {
   getLowStockAlerts: () => api.get('/alerts/low-stock')
 };
 
+export const userService = {
+  getUsers: () => api.get('/users'),
+  deleteUser: (id) => api.delete(`/users/${id}`),
+  updateUserRole: (id, role) => api.put(`/users/${id}/role`, { role })
+};
+
 export const reportService = {
   getDashboardStats: () => api.get('/reports/dashboard'),
   getInventoryReport: () => api.get('/reports/inventory'),

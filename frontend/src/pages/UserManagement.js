@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { authService } from '../services/api';
+import React, { useEffect, useState } from 'react';
+import { authService, userService } from '../services/api';
 import { Loader, ErrorMessage } from '../components/UIComponents';
 import RoleGuard from '../components/RoleGuard';
 import '../styles/UserManagement.css';
@@ -7,6 +7,8 @@ import '../styles/UserManagement.css';
 const UserManagement = () => {
   const [showForm, setShowForm] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [users, setUsers] = useState([]);
+  const [fetching, setFetching] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const [formData, setFormData] = useState({
@@ -29,6 +31,7 @@ const UserManagement = () => {
       setSuccess('Utilisateur créé avec succès');
       setFormData({ nom: '', email: '', motDePasse: '', role: 'Magasinier' });
       setShowForm(false);
+      await fetchUsers();
       setTimeout(() => setSuccess(null), 3000);
     } catch (err) {
       setError(err.response?.data?.message || 'Erreur lors de la création');
@@ -36,6 +39,35 @@ const UserManagement = () => {
       setLoading(false);
     }
   };
+
+  const fetchUsers = async () => {
+    setFetching(true);
+    try {
+      const response = await userService.getUsers();
+      setUsers(response.data);
+    } catch (err) {
+      setError(err.response?.data?.message || 'Impossible de récupérer les utilisateurs');
+    } finally {
+      setFetching(false);
+    }
+  };
+
+  const handleDeleteUser = async (id) => {
+    if (!window.confirm('Supprimer cet utilisateur ?')) return;
+
+    try {
+      await userService.deleteUser(id);
+      setSuccess('Utilisateur supprimé avec succès');
+      setUsers((prevUsers) => prevUsers.filter((user) => user.id !== id));
+      setTimeout(() => setSuccess(null), 3000);
+    } catch (err) {
+      setError(err.response?.data?.message || 'Erreur lors de la suppression');
+    }
+  };
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
 
   return (
     <RoleGuard requiredRoles={['Administrateur']}>
@@ -115,6 +147,48 @@ const UserManagement = () => {
           </div>
         )}
 
+        <div className="users-table-section">
+          <h2>Utilisateurs existants</h2>
+          {fetching ? (
+            <Loader />
+          ) : (
+            <div className="users-table-wrapper">
+              {users.length === 0 ? (
+                <p>Aucun utilisateur trouvé.</p>
+              ) : (
+                <table className="users-table">
+                  <thead>
+                    <tr>
+                      <th>Nom</th>
+                      <th>Email</th>
+                      <th>Rôle</th>
+                      <th>Créé le</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {users.map((user) => (
+                      <tr key={user.id}>
+                        <td>{user.nom}</td>
+                        <td>{user.email}</td>
+                        <td>{user.role}</td>
+                        <td>{new Date(user.createdAt).toLocaleDateString()}</td>
+                        <td>
+                          <button
+                            className="btn-danger"
+                            onClick={() => handleDeleteUser(user.id)}
+                          >
+                            Supprimer
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
+            </div>
+          )}
+        </div>
         <div className="users-info">
           <h2>Rôles disponibles</h2>
           <div className="roles-grid">
