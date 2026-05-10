@@ -23,6 +23,9 @@ const Navigation = () => {
         <li><Link to="/stock">Stock</Link></li>
         <li><Link to="/alerts">Alertes</Link></li>
         <li><Link to="/reports">Rapports</Link></li>
+        {user?.role === 'Administrateur' && (
+          <li><Link to="/users">Utilisateurs</Link></li>
+        )}
       </ul>
       <div className="navbar-user">
         <span>{user?.nom}</span>

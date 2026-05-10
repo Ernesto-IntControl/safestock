@@ -1,0 +1,102 @@
+.user-management {
+  padding: 20px;
+}
+
+.user-management h1 {
+  color: #2c3e50;
+  margin-bottom: 20px;
+}
+
+.user-management .btn-primary {
+  margin-bottom: 20px;
+}
+
+.form-container {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  max-width: 400px;
+}
+
+.form-container h2 {
+  color: #2c3e50;
+  margin-bottom: 15px;
+}
+
+.form-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.success-message {
+  background-color: #d4edda;
+  color: #155724;
+  padding: 12px 15px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+}
+
+.users-info {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-top: 30px;
+}
+
+.users-info h2 {
+  color: #2c3e50;
+  margin-bottom: 20px;
+}
+
+.roles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.role-card {
+  border: 2px solid #dee2e6;
+  border-radius: 8px;
+  padding: 20px;
+  transition: 0.3s;
+}
+
+.role-card:hover {
+  border-color: #007bff;
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.1);
+}
+
+.role-card h3 {
+  color: #2c3e50;
+  margin-top: 0;
+  margin-bottom: 5px;
+}
+
+.role-card p {
+  color: #7f8c8d;
+  font-size: 14px;
+  margin: 10px 0;
+}
+
+.role-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 15px 0 0 0;
+}
+
+.role-card li {
+  color: #555;
+  padding: 5px 0;
+  font-size: 13px;
+  border-top: 1px solid #f0f0f0;
+  padding-top: 8px;
+}
+
+.role-card li:first-child {
+  border-top: none;
+  padding-top: 0;
+}
