@@ -30,6 +30,15 @@
   margin-top: 20px;
 }
 
+.results-info {
+  background-color: #e7f3ff;
+  color: #0066cc;
+  padding: 10px 15px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  font-size: 14px;
+}
+
 .products-table {
   width: 100%;
   border-collapse: collapse;

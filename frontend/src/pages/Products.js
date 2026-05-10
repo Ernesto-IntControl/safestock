@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { productService } from '../services/api';
+import SearchBar from '../components/SearchBar';
 import '../styles/Products.css';
 
 const Products = () => {
   const [products, setProducts] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
   const [formData, setFormData] = useState({
     nom: '',
     categorie: '',
@@ -20,6 +23,10 @@ const Products = () => {
     loadProducts();
   }, []);
 
+  useEffect(() => {
+    filterProducts(searchQuery);
+  }, [products, searchQuery]);
+
   const loadProducts = async () => {
     try {
       const response = await productService.getAllProducts();
@@ -29,6 +36,15 @@ const Products = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const filterProducts = (query) => {
+    const filtered = products.filter(product =>
+      product.nom.toLowerCase().includes(query.toLowerCase()) ||
+      product.categorie.toLowerCase().includes(query.toLowerCase()) ||
+      product.codeBarre.includes(query)
+    );
+    setFilteredProducts(filtered);
   };
 
   const handleSubmit = async (e) => {
@@ -78,6 +94,11 @@ const Products = () => {
           + Nouveau produit
         </button>
       )}
+
+      <SearchBar 
+        onSearch={setSearchQuery}
+        placeholder="Rechercher par nom, catégorie ou code-barres..."
+      />
 
       {showForm && (
         <div className="form-container">
@@ -136,6 +157,14 @@ const Products = () => {
         </div>
       )}
 
+      <div className="results-info">
+        {filteredProducts.length > 0 ? (
+          <p>{filteredProducts.length} produit(s) trouvé(s)</p>
+        ) : (
+          <p>Aucun produit ne correspond à votre recherche</p>
+        )}
+      </div>
+
       <table className="products-table">
         <thead>
           <tr>
@@ -148,7 +177,7 @@ const Products = () => {
           </tr>
         </thead>
         <tbody>
-          {products.map(product => (
+          {filteredProducts.map(product => (
             <tr key={product.id}>
               <td>{product.nom}</td>
               <td>{product.categorie}</td>
