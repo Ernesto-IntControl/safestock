@@ -6,6 +6,7 @@ const authRoutes = require('./routes/authRoutes');
 const productRoutes = require('./routes/productRoutes');
 const stockRoutes = require('./routes/stockRoutes');
 const alertRoutes = require('./routes/alertRoutes');
+const reportRoutes = require('./routes/reportRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -23,6 +24,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/stock', stockRoutes);
 app.use('/api/alerts', alertRoutes);
+app.use('/api/reports', reportRoutes);
 
 // Start server
 app.listen(PORT, () => {
