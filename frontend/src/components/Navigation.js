@@ -21,6 +21,7 @@ const Navigation = () => {
         <li><Link to="/dashboard">Tableau de bord</Link></li>
         <li><Link to="/products">Produits</Link></li>
         <li><Link to="/stock">Stock</Link></li>
+        <li><Link to="/alerts">Alertes</Link></li>
         <li><Link to="/reports">Rapports</Link></li>
       </ul>
       <div className="navbar-user">
