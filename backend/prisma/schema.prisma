@@ -1,0 +1,65 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Utilisateur {
+  id          Int      @id @default(autoincrement())
+  nom         String
+  email       String   @unique
+  motDePasse  String
+  role        String   // Administrateur, Superviseur, Magasinier
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("utilisateurs")
+}
+
+model Produit {
+  id          Int      @id @default(autoincrement())
+  nom         String
+  categorie   String
+  codeBarre   String   @unique
+  dureeVie    Int      // en jours
+  unite       String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  lots        LotStock[]
+
+  @@map("produits")
+}
+
+model LotStock {
+  id              Int      @id @default(autoincrement())
+  produitId       Int
+  quantite        Int
+  dateProduction  DateTime
+  dateExpiration  DateTime
+  createdAt       DateTime @default(now())
+
+  produit         Produit  @relation(fields: [produitId], references: [id], onDelete: Cascade)
+
+  mouvements      Mouvement[]
+
+  @@map("lots_stock")
+}
+
+model Mouvement {
+  id          Int      @id @default(autoincrement())
+  lotId       Int
+  type        String   // 'entree' ou 'sortie'
+  quantite    Int
+  date        DateTime @default(now())
+
+  lot         LotStock @relation(fields: [lotId], references: [id], onDelete: Cascade)
+
+  @@map("mouvements")
+}
