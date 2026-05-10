@@ -1,0 +1,79 @@
+.stock {
+  padding: 20px;
+}
+
+.stock h1 {
+  color: #2c3e50;
+  margin-bottom: 20px;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.form-container {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.form-container h2 {
+  color: #2c3e50;
+  margin-bottom: 15px;
+}
+
+.form-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.lots-section {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.lots-section h2 {
+  color: #2c3e50;
+  margin-bottom: 15px;
+}
+
+.lots-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.lots-table th {
+  background-color: #2c3e50;
+  color: white;
+  padding: 12px;
+  text-align: left;
+  font-weight: 600;
+}
+
+.lots-table td {
+  padding: 12px;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.lots-table tbody tr:hover {
+  background-color: #f8f9fa;
+}
+
+.lots-table tr.status-ok {
+  background-color: #d4edda;
+}
+
+.lots-table tr.status-alerte {
+  background-color: #fff3cd;
+}
+
+.lots-table tr.status-périmé {
+  background-color: #f8d7da;
+}

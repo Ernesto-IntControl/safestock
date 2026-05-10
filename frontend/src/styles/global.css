@@ -1,0 +1,105 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f5f5f5;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.btn-primary, .btn-secondary, .btn-edit, .btn-delete, .btn-logout {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: 0.3s;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  color: white;
+}
+
+.btn-secondary:hover {
+  background-color: #545b62;
+}
+
+.btn-edit {
+  background-color: #28a745;
+  color: white;
+  font-size: 12px;
+  padding: 5px 10px;
+}
+
+.btn-delete {
+  background-color: #dc3545;
+  color: white;
+  font-size: 12px;
+  padding: 5px 10px;
+}
+
+.btn-logout {
+  background-color: #dc3545;
+  color: white;
+}
+
+.error {
+  color: #dc3545;
+  padding: 10px;
+  border-radius: 4px;
+  background-color: #f8d7da;
+  margin-bottom: 10px;
+}
+
+.success {
+  color: #155724;
+  padding: 10px;
+  border-radius: 4px;
+  background-color: #d4edda;
+  margin-bottom: 10px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 600;
+  color: #333;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}

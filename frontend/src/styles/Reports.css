@@ -1,0 +1,83 @@
+.reports {
+  padding: 20px;
+}
+
+.reports h1 {
+  color: #2c3e50;
+  margin-bottom: 20px;
+}
+
+.btn-primary {
+  margin-bottom: 20px;
+}
+
+.report-section {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.report-section h2 {
+  color: #2c3e50;
+  margin-bottom: 15px;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.stat-box {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.stat-value {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.stat-name {
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+.inventory-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.inventory-table th {
+  background-color: #f8f9fa;
+  padding: 12px;
+  text-align: left;
+  font-weight: 600;
+  border-bottom: 2px solid #dee2e6;
+}
+
+.inventory-table td {
+  padding: 12px;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.inventory-table tbody tr:hover {
+  background-color: #f8f9fa;
+}
+
+@media print {
+  .btn-primary {
+    display: none;
+  }
+
+  .reports {
+    background: white;
+  }
+}
