@@ -11,12 +11,8 @@ const UserManagement = () => {
   const [fetching, setFetching] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
-  const [formData, setFormData] = useState({
-    nom: '',
-    email: '',
-    motDePasse: '',
-    role: 'Magasinier'
-  });
+  const [editingUser, setEditingUser] = useState(null);
+  const [editFormData, setEditFormData] = useState({ role: '' });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -62,6 +58,33 @@ const UserManagement = () => {
       setTimeout(() => setSuccess(null), 3000);
     } catch (err) {
       setError(err.response?.data?.message || 'Erreur lors de la suppression');
+    }
+  };
+
+  const handleEditRole = (user) => {
+    setEditingUser(user.id);
+    setEditFormData({ role: user.role });
+  };
+
+  const handleCancelEdit = () => {
+    setEditingUser(null);
+    setEditFormData({ role: '' });
+  };
+
+  const handleUpdateRole = async (userId) => {
+    try {
+      await userService.updateUserRole(userId, editFormData.role);
+      setSuccess('Rôle mis à jour avec succès');
+      setUsers((prevUsers) =>
+        prevUsers.map((user) =>
+          user.id === userId ? { ...user, role: editFormData.role } : user
+        )
+      );
+      setEditingUser(null);
+      setEditFormData({ role: '' });
+      setTimeout(() => setSuccess(null), 3000);
+    } catch (err) {
+      setError(err.response?.data?.message || 'Erreur lors de la mise à jour du rôle');
     }
   };
 
@@ -171,15 +194,54 @@ const UserManagement = () => {
                       <tr key={user.id}>
                         <td>{user.nom}</td>
                         <td>{user.email}</td>
-                        <td>{user.role}</td>
+                        <td>
+                          {editingUser === user.id ? (
+                            <select
+                              value={editFormData.role}
+                              onChange={(e) => setEditFormData({ role: e.target.value })}
+                              className="role-select"
+                            >
+                              <option value="Magasinier">Magasinier</option>
+                              <option value="Superviseur">Superviseur</option>
+                              <option value="Administrateur">Administrateur</option>
+                            </select>
+                          ) : (
+                            user.role
+                          )}
+                        </td>
                         <td>{new Date(user.createdAt).toLocaleDateString()}</td>
                         <td>
-                          <button
-                            className="btn-danger"
-                            onClick={() => handleDeleteUser(user.id)}
-                          >
-                            Supprimer
-                          </button>
+                          {editingUser === user.id ? (
+                            <div className="edit-actions">
+                              <button
+                                className="btn-primary"
+                                onClick={() => handleUpdateRole(user.id)}
+                              >
+                                Sauvegarder
+                              </button>
+                              <button
+                                className="btn-secondary"
+                                onClick={handleCancelEdit}
+                              >
+                                Annuler
+                              </button>
+                            </div>
+                          ) : (
+                            <div className="edit-actions">
+                              <button
+                                className="btn-edit"
+                                onClick={() => handleEditRole(user)}
+                              >
+                                Modifier rôle
+                              </button>
+                              <button
+                                className="btn-danger"
+                                onClick={() => handleDeleteUser(user.id)}
+                              >
+                                Supprimer
+                              </button>
+                            </div>
+                          )}
                         </td>
                       </tr>
                     ))}
