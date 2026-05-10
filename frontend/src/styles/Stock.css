@@ -32,6 +32,20 @@
   margin-top: 20px;
 }
 
+.btn-scanner {
+  padding: 10px 15px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.btn-scanner:hover {
+  background-color: #0056b3;
+}
+
 .lots-section {
   background: white;
   padding: 20px;
