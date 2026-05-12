@@ -74,6 +74,18 @@ SafeStock vise à moderniser ce processus grâce à une solution numérique cent
 ## Base de données
 - MySQL
 
+## Railway / hébergement MySQL
+- Configurez un projet Railway et ajoutez un plugin MySQL.
+- Copiez la valeur `DATABASE_URL` fournie par Railway dans `backend/.env`.
+- Assurez-vous que `JWT_SECRET` est bien défini dans `backend/.env`.
+
+### Commandes utiles
+Dans `backend` :
+- `npm run db:setup` : initialise le schéma Prisma dans la base de données.
+- `npm run db:push` : pousse le schéma Prisma sur la base de données.
+- `npm run migrate:dev` : crée une migration de développement et met à jour la base.
+- `npm run create-admin -- --email admin@example.com --password secret123 --name "Admin"` : crée un admin.
+
 ## Authentification
 - JWT
 
