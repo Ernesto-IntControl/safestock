@@ -13,6 +13,12 @@ const UserManagement = () => {
   const [success, setSuccess] = useState(null);
   const [editingUser, setEditingUser] = useState(null);
   const [editFormData, setEditFormData] = useState({ role: '' });
+  const [formData, setFormData] = useState({
+    nom: '',
+    email: '',
+    motDePasse: '',
+    role: 'Magasinier'
+  });
 
   const handleSubmit = async (e) => {
     e.preventDefault();

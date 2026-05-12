@@ -87,18 +87,32 @@ const Products = () => {
   const canDelete = user?.role === 'Administrateur';
 
   return (
-    <div className="products">
-      <h1>Gestion des produits</h1>
-      {canEdit && (
-        <button onClick={() => setShowForm(true)} className="btn-primary">
-          + Nouveau produit
-        </button>
-      )}
+    <div className="products-container">
+      <div className="page-header">
+        <div>
+          <h1>Gestion des produits</h1>
+          <p className="page-description">Tableau de bord produit pour créer, modifier et suivre vos articles.</p>
+        </div>
+        {canEdit && (
+          <button onClick={() => setShowForm(true)} className="btn-primary">
+            + Nouveau produit
+          </button>
+        )}
+      </div>
 
-      <SearchBar 
-        onSearch={setSearchQuery}
-        placeholder="Rechercher par nom, catégorie ou code-barres..."
-      />
+      <div className="page-toolbar">
+        <SearchBar 
+          onSearch={setSearchQuery}
+          placeholder="Rechercher par nom, catégorie ou code-barres..."
+        />
+        <div className="results-info">
+          {filteredProducts.length > 0 ? (
+            <span>{filteredProducts.length} produit(s) trouvé(s)</span>
+          ) : (
+            <span>Aucun produit ne correspond à votre recherche</span>
+          )}
+        </div>
+      </div>
 
       {showForm && (
         <div className="form-container">
@@ -156,14 +170,6 @@ const Products = () => {
           </form>
         </div>
       )}
-
-      <div className="results-info">
-        {filteredProducts.length > 0 ? (
-          <p>{filteredProducts.length} produit(s) trouvé(s)</p>
-        ) : (
-          <p>Aucun produit ne correspond à votre recherche</p>
-        )}
-      </div>
 
       <table className="products-table">
         <thead>

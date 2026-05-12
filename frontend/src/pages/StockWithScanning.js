@@ -76,21 +76,26 @@ const StockWithScanning = () => {
   const canManage = ['Administrateur', 'Magasinier'].includes(user?.role);
 
   return (
-    <div className="stock">
-      <h1>Gestion du stock</h1>
-      {canManage && (
-        <div className="actions">
-          <button onClick={() => { setFormType('entry'); setShowForm(true); }} className="btn-primary">
-            + Entrée de stock
-          </button>
-          <button onClick={() => { setFormType('removal'); setShowForm(true); }} className="btn-primary">
-            - Sortie de stock
-          </button>
-          <button onClick={() => setShowScanner(true)} className="btn-primary">
-            📱 Scanner
-          </button>
+    <div className="stock-container">
+      <div className="page-header">
+        <div>
+          <h1>Gestion du stock</h1>
+          <p className="page-description">Suivi des lots, entrées et sorties avec scanner de code-barres.</p>
         </div>
-      )}
+        {canManage && (
+          <div className="stock-actions">
+            <button onClick={() => { setFormType('entry'); setShowForm(true); }} className="btn-primary">
+              + Entrée de stock
+            </button>
+            <button onClick={() => { setFormType('removal'); setShowForm(true); }} className="btn-secondary">
+              - Sortie de stock
+            </button>
+            <button onClick={() => setShowScanner(true)} className="btn-scan">
+              📱 Scanner
+            </button>
+          </div>
+        )}
+      </div>
 
       {showScanner && (
         <BarcodeScanner 
@@ -121,7 +126,7 @@ const StockWithScanning = () => {
                     <button 
                       type="button" 
                       onClick={() => setShowScanner(true)}
-                      className="btn-scanner"
+                      className="btn-scan"
                     >
                       📱
                     </button>

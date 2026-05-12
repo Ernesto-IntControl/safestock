@@ -23,32 +23,44 @@ const Login = () => {
 
   return (
     <div className="auth-container">
-      <div className="auth-box">
-        <h1>SafeStock</h1>
-        <h2>Connexion</h2>
-        {error && <div className="error">{error}</div>}
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label>Email</label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
+      <div className="auth-card">
+        <div className="auth-left">
+          <div className="auth-left-overlay">
+            <div className="auth-left-content">
+              <h2>Bienvenue sur SafeStock</h2>
+              <p>Surveillez vos stocks, anticipez les alertes et gagnez en efficacité.</p>
+            </div>
           </div>
-          <div className="form-group">
-            <label>Mot de passe</label>
-            <input
-              type="password"
-              value={motDePasse}
-              onChange={(e) => setMotDePasse(e.target.value)}
-              required
-            />
+        </div>
+
+        <div className="auth-right">
+          <div className="auth-box">
+            <h1>SafeStock</h1>
+            <h2>Connexion</h2>
+            {error && <div className="error">{error}</div>}
+            <form onSubmit={handleSubmit}>
+              <div className="form-group">
+                <label>Email</label>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label>Mot de passe</label>
+                <input
+                  type="password"
+                  value={motDePasse}
+                  onChange={(e) => setMotDePasse(e.target.value)}
+                  required
+                />
+              </div>
+              <button type="submit">Connexion</button>
+            </form>
           </div>
-          <button type="submit">Connexion</button>
-        </form>
-        <p>Pas encore de compte ? <a href="/register">S'inscrire</a></p>
+        </div>
       </div>
     </div>
   );
