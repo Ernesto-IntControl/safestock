@@ -76,8 +76,17 @@ SafeStock vise à moderniser ce processus grâce à une solution numérique cent
 
 ## Railway / hébergement MySQL
 - Configurez un projet Railway et ajoutez un plugin MySQL.
-- Copiez la valeur `DATABASE_URL` fournie par Railway dans `backend/.env`.
-- Assurez-vous que `JWT_SECRET` est bien défini dans `backend/.env`.
+- Copiez la valeur `DATABASE_URL` fournie par Railway dans `backend/.env` ou dans les variables d'environnement Railway.
+- Assurez-vous que `JWT_SECRET` est bien défini dans `backend/.env` ou dans les variables Railway.
+- En production, ne stockez pas les secrets dans `.env` committé.
+
+### Déploiement backend
+- Déployez le backend sur Railway ou un service équivalent en pointant vers `backend/src/index.js`.
+- Assurez-vous d’avoir `DATABASE_URL` et `JWT_SECRET` configurés dans les variables d’environnement du service.
+
+### Déploiement frontend
+- Le frontend est prévu pour Vercel avec `vercel.json`.
+- Configurez `REACT_APP_API_URL` sur Vercel avec l’URL publique du backend.
 
 ### Commandes utiles
 Dans `backend` :
