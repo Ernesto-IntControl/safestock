@@ -45,7 +45,8 @@ const login = async (req, res) => {
     }
 
     // Generate token
-    const token = jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    const jwtSecret = process.env.JWT_SECRET || 'dev_secret_key';
+    const token = jwt.sign({ id: user.id, role: user.role }, jwtSecret, { expiresIn: '1h' });
 
     res.json({ message: 'Connexion réussie', token, user: { id: user.id, nom: user.nom, email: user.email, role: user.role } });
   } catch (error) {
