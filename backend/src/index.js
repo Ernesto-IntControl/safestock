@@ -64,7 +64,10 @@ app.use((req, res) => {
 
 app.use((error, req, res, next) => {
   console.error(error);
-  res.status(500).json({ message: 'Erreur serveur' });
+  const statusCode = error.statusCode || error.status || 500;
+  res.status(statusCode).json({
+    message: statusCode === 500 ? 'Erreur serveur' : error.message
+  });
 });
 
 // Start server
