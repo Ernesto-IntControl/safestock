@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { Pencil, Plus, Trash2 } from 'lucide-react';
 import { productService } from '../services/api';
 import SearchBar from '../components/SearchBar';
 import '../styles/Products.css';
@@ -95,7 +96,7 @@ const Products = () => {
         </div>
         {canEdit && (
           <button onClick={() => setShowForm(true)} className="btn-primary">
-            + Nouveau produit
+            <Plus size={18} /> Nouveau produit
           </button>
         )}
       </div>
@@ -192,9 +193,9 @@ const Products = () => {
               <td>{product.unite}</td>
               {canEdit && (
                 <td className="actions">
-                  <button onClick={() => handleEdit(product)} className="btn-edit">Modifier</button>
+                  <button onClick={() => handleEdit(product)} className="btn-edit"><Pencil size={15} /> Modifier</button>
                   {canDelete && (
-                    <button onClick={() => handleDelete(product.id)} className="btn-delete">Supprimer</button>
+                    <button onClick={() => handleDelete(product.id)} className="btn-delete"><Trash2 size={15} /> Supprimer</button>
                   )}
                 </td>
               )}

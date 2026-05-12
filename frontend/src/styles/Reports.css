@@ -1,83 +1,90 @@
 .reports {
-  padding: 20px;
+  display: grid;
+  gap: 20px;
 }
 
-.reports h1 {
-  color: #2c3e50;
-  margin-bottom: 20px;
-}
-
-.btn-primary {
-  margin-bottom: 20px;
+.reports .page-hero {
+  margin-bottom: 0;
 }
 
 .report-section {
-  background: white;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  margin-bottom: 20px;
+  border-radius: var(--radius);
+  padding: 24px;
 }
 
 .report-section h2 {
-  color: #2c3e50;
-  margin-bottom: 15px;
+  margin-bottom: 18px;
+  color: #0f172a;
+  font-size: 20px;
+  font-weight: 650;
 }
 
-.stats-grid {
+.reports-stats {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 15px;
-  margin-bottom: 20px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
 }
 
 .stat-box {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+  display: grid;
+  gap: 10px;
+  border: 1px solid rgba(37, 99, 235, 0.14);
+  border-radius: 20px;
+  background: rgba(37, 99, 235, 0.08);
+  color: #1d4ed8;
   padding: 20px;
-  border-radius: 8px;
-  text-align: center;
 }
 
 .stat-value {
-  font-size: 28px;
-  font-weight: bold;
-  margin-bottom: 5px;
+  color: #0f172a;
+  font-size: 30px;
+  font-weight: 700;
 }
 
 .stat-name {
+  color: #64748b;
   font-size: 14px;
-  opacity: 0.9;
+  font-weight: 600;
 }
 
 .inventory-table {
-  width: 100%;
-  border-collapse: collapse;
+  overflow: hidden;
+  border-radius: 18px;
+}
+
+.inventory-table th,
+.inventory-table td {
+  padding: 15px 16px;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.2);
 }
 
 .inventory-table th {
-  background-color: #f8f9fa;
-  padding: 12px;
-  text-align: left;
-  font-weight: 600;
-  border-bottom: 2px solid #dee2e6;
+  background: rgba(248, 250, 252, 0.78);
 }
 
-.inventory-table td {
-  padding: 12px;
-  border-bottom: 1px solid #dee2e6;
+.inventory-table tbody tr:hover td {
+  background: rgba(248, 250, 252, 0.68);
 }
 
-.inventory-table tbody tr:hover {
-  background-color: #f8f9fa;
+@media (max-width: 920px) {
+  .reports-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  .reports-stats {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media print {
+  .navbar,
   .btn-primary {
     display: none;
   }
 
-  .reports {
-    background: white;
+  .report-section {
+    box-shadow: none;
   }
 }

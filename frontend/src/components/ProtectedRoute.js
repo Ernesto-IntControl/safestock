@@ -12,9 +12,9 @@ const ProtectedRoute = ({ children }) => {
   return (
     <>
       <Navigation />
-      <div className="container">
+      <main className="container">
         {children}
-      </div>
+      </main>
     </>
   );
 };

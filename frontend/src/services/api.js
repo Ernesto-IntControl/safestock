@@ -48,6 +48,8 @@ export const alertService = {
 
 export const userService = {
   getUsers: () => api.get('/users'),
+  getProfile: () => api.get('/users/me'),
+  updateProfile: (data) => api.put('/users/me', data),
   deleteUser: (id) => api.delete(`/users/${id}`),
   updateUserRole: (id, role) => api.put(`/users/${id}/role`, { role })
 };

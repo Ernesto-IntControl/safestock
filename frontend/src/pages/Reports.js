@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { Printer, TrendingDown, TrendingUp } from 'lucide-react';
 import { reportService } from '../services/api';
 import '../styles/Reports.css';
 
@@ -8,53 +9,59 @@ const Reports = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const loadReports = async () => {
+      try {
+        const [inventoryRes, movementsRes] = await Promise.all([
+          reportService.getInventoryReport(),
+          reportService.getMovementStats()
+        ]);
+        setInventory(inventoryRes.data);
+        setMovements(movementsRes.data);
+      } catch (error) {
+        console.error('Erreur:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
     loadReports();
   }, []);
 
-  const loadReports = async () => {
-    try {
-      const [inventoryRes, movementsRes] = await Promise.all([
-        reportService.getInventoryReport(),
-        reportService.getMovementStats()
-      ]);
-      setInventory(inventoryRes.data);
-      setMovements(movementsRes.data);
-    } catch (error) {
-      console.error('Erreur:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  if (loading) return <div>Chargement...</div>;
-
-  const handlePrint = () => {
-    window.print();
-  };
+  if (loading) return <div className="loader">Chargement...</div>;
 
   return (
     <div className="reports">
-      <h1>Rapports</h1>
-      <button onClick={handlePrint} className="btn-primary">Imprimer</button>
+      <div className="page-hero glass-panel">
+        <div>
+          <p className="eyebrow">Analyse</p>
+          <h1>Rapports</h1>
+          <p className="page-description">Consultez les mouvements et l'etat d'inventaire.</p>
+        </div>
+        <button onClick={() => window.print()} className="btn-primary"><Printer size={18} /> Imprimer</button>
+      </div>
 
       <div className="report-section">
         <h2>Statistiques des mouvements</h2>
-        <div className="stats-grid">
+        <div className="stats-grid reports-stats">
           <div className="stat-box">
+            <TrendingUp size={20} />
             <div className="stat-value">{movements?.totalEntries}</div>
-            <div className="stat-name">Entrées</div>
+            <div className="stat-name">Entrees</div>
           </div>
           <div className="stat-box">
+            <TrendingUp size={20} />
             <div className="stat-value">{movements?.quantityEntered}</div>
-            <div className="stat-name">Quantité entrée</div>
+            <div className="stat-name">Quantite entree</div>
           </div>
           <div className="stat-box">
+            <TrendingDown size={20} />
             <div className="stat-value">{movements?.totalRemovals}</div>
             <div className="stat-name">Sorties</div>
           </div>
           <div className="stat-box">
+            <TrendingDown size={20} />
             <div className="stat-value">{movements?.quantityRemoved}</div>
-            <div className="stat-name">Quantité sortie</div>
+            <div className="stat-name">Quantite sortie</div>
           </div>
         </div>
       </div>
@@ -65,14 +72,14 @@ const Reports = () => {
           <thead>
             <tr>
               <th>Produit</th>
-              <th>Catégorie</th>
+              <th>Categorie</th>
               <th>Code-barres</th>
-              <th>Quantité totale</th>
+              <th>Quantite totale</th>
               <th>Nombre de lots</th>
             </tr>
           </thead>
           <tbody>
-            {inventory.map(item => (
+            {inventory.map((item) => (
               <tr key={item.id}>
                 <td>{item.nom}</td>
                 <td>{item.categorie}</td>

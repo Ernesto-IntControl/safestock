@@ -171,3 +171,52 @@
   border-radius: 4px;
   font-size: 14px;
 }
+
+.user-management {
+  padding: 0;
+}
+
+.user-management h1 {
+  margin-bottom: 18px;
+  color: var(--text);
+  font-size: clamp(28px, 4vw, 36px);
+  font-weight: 650;
+}
+
+.user-management .form-container,
+.users-info,
+.users-table-section {
+  max-width: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(18px);
+}
+
+.users-table-wrapper {
+  overflow-x: auto;
+}
+
+.users-table {
+  min-width: 780px;
+}
+
+.users-table th {
+  background: rgba(248, 250, 252, 0.78);
+}
+
+.users-table td {
+  background: rgba(255, 255, 255, 0.58);
+}
+
+.role-card {
+  border: 1px solid rgba(148, 163, 184, 0.24);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.54);
+}
+
+.role-card:hover {
+  border-color: rgba(37, 99, 235, 0.42);
+  box-shadow: var(--shadow-soft);
+}

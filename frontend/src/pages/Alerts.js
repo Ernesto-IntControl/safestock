@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { Bell, RotateCcw } from 'lucide-react';
+import { EmptyState, ErrorMessage, Loader } from '../components/UIComponents';
 import { alertService } from '../services/api';
-import { Loader, ErrorMessage, EmptyState } from '../components/UIComponents';
 import '../styles/Alerts.css';
 
 const Alerts = () => {
@@ -10,10 +11,6 @@ const Alerts = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [activeTab, setActiveTab] = useState('expiration');
-
-  useEffect(() => {
-    loadAlerts();
-  }, []);
 
   const loadAlerts = async () => {
     try {
@@ -36,36 +33,33 @@ const Alerts = () => {
     }
   };
 
+  useEffect(() => {
+    loadAlerts();
+  }, []);
+
   if (loading) return <Loader />;
 
   return (
     <div className="alerts-page">
-      <h1>Alertes</h1>
-      
-      {error && (
-        <ErrorMessage 
-          message={error}
-          onDismiss={() => setError(null)}
-        />
-      )}
+      <div className="page-hero glass-panel">
+        <div>
+          <p className="eyebrow">Surveillance</p>
+          <h1>Alertes</h1>
+          <p className="page-description">Suivez les produits sensibles, perimes ou en stock faible.</p>
+        </div>
+        <Bell size={30} />
+      </div>
+
+      {error && <ErrorMessage message={error} onDismiss={() => setError(null)} />}
 
       <div className="alerts-tabs">
-        <button
-          className={`tab ${activeTab === 'expiration' ? 'active' : ''}`}
-          onClick={() => setActiveTab('expiration')}
-        >
-          Péremption proche ({expirationAlerts.length})
+        <button className={`tab ${activeTab === 'expiration' ? 'active' : ''}`} onClick={() => setActiveTab('expiration')}>
+          Peremption proche ({expirationAlerts.length})
         </button>
-        <button
-          className={`tab ${activeTab === 'expired' ? 'active' : ''}`}
-          onClick={() => setActiveTab('expired')}
-        >
-          Produits périmés ({expiredProducts.length})
+        <button className={`tab ${activeTab === 'expired' ? 'active' : ''}`} onClick={() => setActiveTab('expired')}>
+          Produits perimes ({expiredProducts.length})
         </button>
-        <button
-          className={`tab ${activeTab === 'low-stock' ? 'active' : ''}`}
-          onClick={() => setActiveTab('low-stock')}
-        >
+        <button className={`tab ${activeTab === 'low-stock' ? 'active' : ''}`} onClick={() => setActiveTab('low-stock')}>
           Stock faible ({lowStockAlerts.length})
         </button>
       </div>
@@ -73,13 +67,13 @@ const Alerts = () => {
       <div className="alerts-content">
         {activeTab === 'expiration' && (
           <div className="alerts-list">
-            <h2>Produits approchant de la péremption</h2>
+            <h2>Produits approchant de la peremption</h2>
             {expirationAlerts.length > 0 ? (
               <table className="alerts-table">
                 <thead>
                   <tr>
                     <th>Produit</th>
-                    <th>Quantité</th>
+                    <th>Quantite</th>
                     <th>Date production</th>
                     <th>Date expiration</th>
                   </tr>
@@ -96,20 +90,20 @@ const Alerts = () => {
                 </tbody>
               </table>
             ) : (
-              <EmptyState message="Aucun produit proche de la péremption" />
+              <EmptyState message="Aucun produit proche de la peremption" />
             )}
           </div>
         )}
 
         {activeTab === 'expired' && (
           <div className="alerts-list">
-            <h2>Produits périmés</h2>
+            <h2>Produits perimes</h2>
             {expiredProducts.length > 0 ? (
               <table className="alerts-table">
                 <thead>
                   <tr>
                     <th>Produit</th>
-                    <th>Quantité</th>
+                    <th>Quantite</th>
                     <th>Date production</th>
                     <th>Date expiration</th>
                   </tr>
@@ -126,7 +120,7 @@ const Alerts = () => {
                 </tbody>
               </table>
             ) : (
-              <EmptyState message="Aucun produit périmé" />
+              <EmptyState message="Aucun produit perime" />
             )}
           </div>
         )}
@@ -139,7 +133,7 @@ const Alerts = () => {
                 <thead>
                   <tr>
                     <th>Produit</th>
-                    <th>Quantité</th>
+                    <th>Quantite</th>
                     <th>Seuil</th>
                   </tr>
                 </thead>
@@ -161,7 +155,7 @@ const Alerts = () => {
       </div>
 
       <button onClick={loadAlerts} className="btn-refresh">
-        🔄 Actualiser
+        <RotateCcw size={17} /> Actualiser
       </button>
     </div>
   );

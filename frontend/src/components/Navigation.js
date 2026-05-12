@@ -1,10 +1,44 @@
-import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
+import {
+  AlertTriangle,
+  Boxes,
+  ChartNoAxesCombined,
+  LayoutDashboard,
+  LogOut,
+  Package,
+  Shield,
+  UserRound,
+  UsersRound,
+  Warehouse
+} from 'lucide-react';
 import '../styles/Navigation.css';
 
 const Navigation = () => {
-  const user = JSON.parse(localStorage.getItem('user'));
+  const [user, setUser] = useState(() => JSON.parse(localStorage.getItem('user')));
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const syncUser = () => setUser(JSON.parse(localStorage.getItem('user')));
+    window.addEventListener('safestock:user-updated', syncUser);
+    window.addEventListener('storage', syncUser);
+    return () => {
+      window.removeEventListener('safestock:user-updated', syncUser);
+      window.removeEventListener('storage', syncUser);
+    };
+  }, []);
+
+  const navItems = [
+    { to: '/dashboard', label: 'Tableau de bord', icon: LayoutDashboard },
+    { to: '/products', label: 'Produits', icon: Package },
+    { to: '/stock', label: 'Stock', icon: Boxes },
+    { to: '/alerts', label: 'Alertes', icon: AlertTriangle },
+    { to: '/reports', label: 'Rapports', icon: ChartNoAxesCombined }
+  ];
+
+  if (user?.role === 'Administrateur') {
+    navItems.push({ to: '/users', label: 'Utilisateurs', icon: UsersRound });
+  }
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -15,21 +49,34 @@ const Navigation = () => {
   return (
     <nav className="navbar">
       <div className="navbar-brand">
-        <Link to="/dashboard">SafeStock</Link>
+        <Link to="/dashboard" className="brand-mark">
+          <span><Warehouse size={22} /></span>
+          SafeStock
+        </Link>
       </div>
+
       <ul className="navbar-menu">
-        <li><Link to="/dashboard">Tableau de bord</Link></li>
-        <li><Link to="/products">Produits</Link></li>
-        <li><Link to="/stock">Stock</Link></li>
-        <li><Link to="/alerts">Alertes</Link></li>
-        <li><Link to="/reports">Rapports</Link></li>
-        {user?.role === 'Administrateur' && (
-          <li><Link to="/users">Utilisateurs</Link></li>
-        )}
+        {navItems.map(({ to, label, icon: Icon }) => (
+          <li key={to}>
+            <NavLink to={to}>
+              <Icon size={17} />
+              {label}
+            </NavLink>
+          </li>
+        ))}
       </ul>
+
       <div className="navbar-user">
-        <span>{user?.nom}</span>
-        <button onClick={handleLogout} className="btn-logout">Déconnexion</button>
+        <NavLink to="/profile" className="user-chip">
+          <UserRound size={18} />
+          <span>
+            <strong>{user?.nom}</strong>
+            <small><Shield size={12} /> {user?.role}</small>
+          </span>
+        </NavLink>
+        <button onClick={handleLogout} className="btn-logout" title="Deconnexion">
+          <LogOut size={18} />
+        </button>
       </div>
     </nav>
   );

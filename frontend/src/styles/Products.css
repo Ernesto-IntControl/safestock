@@ -192,3 +192,31 @@
     padding: 14px 12px;
   }
 }
+
+.products-container {
+  padding: 0;
+  background: transparent;
+}
+
+.products-container .page-header,
+.products-container .form-container {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(18px);
+}
+
+.products-table {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--shadow-soft);
+}
+
+.products-table th {
+  background: rgba(248, 250, 252, 0.78);
+}
+
+.products-table td {
+  background: rgba(255, 255, 255, 0.68);
+}

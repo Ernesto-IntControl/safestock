@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { stockService, productService } from '../services/api';
+import React, { useEffect, useState } from 'react';
+import { Minus, Plus, ScanBarcode } from 'lucide-react';
 import BarcodeScanner from '../components/BarcodeScanner';
+import { productService, stockService } from '../services/api';
 import '../styles/Stock.css';
 
 const StockWithScanning = () => {
@@ -18,10 +19,6 @@ const StockWithScanning = () => {
   });
   const user = JSON.parse(localStorage.getItem('user'));
 
-  useEffect(() => {
-    loadData();
-  }, []);
-
   const loadData = async () => {
     try {
       const [lotsRes, productsRes] = await Promise.all([
@@ -37,29 +34,33 @@ const StockWithScanning = () => {
     }
   };
 
+  useEffect(() => {
+    loadData();
+  }, []);
+
   const handleBarcodeScanned = (barcode) => {
-    const product = products.find(p => p.codeBarre === barcode);
+    const product = products.find((item) => item.codeBarre === barcode);
     if (product) {
       setFormData({ ...formData, produitId: product.id });
       setShowScanner(false);
     } else {
-      alert('Produit non trouvé');
+      alert('Produit non trouve');
     }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
     try {
       if (formType === 'entry') {
         await stockService.addStockEntry({
-          produitId: parseInt(formData.produitId),
-          quantite: parseInt(formData.quantite),
+          produitId: parseInt(formData.produitId, 10),
+          quantite: parseInt(formData.quantite, 10),
           dateProduction: formData.dateProduction
         });
       } else {
         await stockService.removeStock({
-          lotId: parseInt(formData.lotId),
-          quantite: parseInt(formData.quantite)
+          lotId: parseInt(formData.lotId, 10),
+          quantite: parseInt(formData.quantite, 10)
         });
       }
       loadData();
@@ -67,11 +68,11 @@ const StockWithScanning = () => {
       setFormData({ produitId: '', quantite: '', dateProduction: '', lotId: '' });
     } catch (error) {
       console.error('Erreur:', error);
-      alert('Erreur: ' + (error.response?.data?.message || error.message));
+      alert(`Erreur: ${error.response?.data?.message || error.message}`);
     }
   };
 
-  if (loading) return <div>Chargement...</div>;
+  if (loading) return <div className="loader">Chargement...</div>;
 
   const canManage = ['Administrateur', 'Magasinier'].includes(user?.role);
 
@@ -79,26 +80,27 @@ const StockWithScanning = () => {
     <div className="stock-container">
       <div className="page-header">
         <div>
+          <p className="eyebrow">Mouvements</p>
           <h1>Gestion du stock</h1>
-          <p className="page-description">Suivi des lots, entrées et sorties avec scanner de code-barres.</p>
+          <p className="page-description">Suivi des lots, entrees et sorties avec scanner de code-barres.</p>
         </div>
         {canManage && (
           <div className="stock-actions">
             <button onClick={() => { setFormType('entry'); setShowForm(true); }} className="btn-primary">
-              + Entrée de stock
+              <Plus size={18} /> Entree de stock
             </button>
             <button onClick={() => { setFormType('removal'); setShowForm(true); }} className="btn-secondary">
-              - Sortie de stock
+              <Minus size={18} /> Sortie de stock
             </button>
             <button onClick={() => setShowScanner(true)} className="btn-scan">
-              📱 Scanner
+              <ScanBarcode size={18} /> Scanner
             </button>
           </div>
         )}
       </div>
 
       {showScanner && (
-        <BarcodeScanner 
+        <BarcodeScanner
           onScan={handleBarcodeScanned}
           onClose={() => setShowScanner(false)}
         />
@@ -106,38 +108,34 @@ const StockWithScanning = () => {
 
       {showForm && (
         <div className="form-container">
-          <h2>{formType === 'entry' ? 'Entrée de stock' : 'Sortie de stock'}</h2>
+          <h2>{formType === 'entry' ? 'Entree de stock' : 'Sortie de stock'}</h2>
           <form onSubmit={handleSubmit}>
             {formType === 'entry' ? (
               <>
                 <div className="form-group">
                   <label>Produit</label>
-                  <div style={{ display: 'flex', gap: '5px' }}>
+                  <div className="stock-select-row">
                     <select
                       value={formData.produitId}
-                      onChange={(e) => setFormData({ ...formData, produitId: e.target.value })}
+                      onChange={(event) => setFormData({ ...formData, produitId: event.target.value })}
                       required
                     >
-                      <option value="">Sélectionner un produit</option>
-                      {products.map(p => (
-                        <option key={p.id} value={p.id}>{p.nom}</option>
+                      <option value="">Selectionner un produit</option>
+                      {products.map((product) => (
+                        <option key={product.id} value={product.id}>{product.nom}</option>
                       ))}
                     </select>
-                    <button 
-                      type="button" 
-                      onClick={() => setShowScanner(true)}
-                      className="btn-scan"
-                    >
-                      📱
+                    <button type="button" onClick={() => setShowScanner(true)} className="btn-scan">
+                      <ScanBarcode size={18} />
                     </button>
                   </div>
                 </div>
                 <div className="form-group">
-                  <label>Quantité</label>
+                  <label>Quantite</label>
                   <input
                     type="number"
                     value={formData.quantite}
-                    onChange={(e) => setFormData({ ...formData, quantite: e.target.value })}
+                    onChange={(event) => setFormData({ ...formData, quantite: event.target.value })}
                     required
                   />
                 </div>
@@ -146,7 +144,7 @@ const StockWithScanning = () => {
                   <input
                     type="date"
                     value={formData.dateProduction}
-                    onChange={(e) => setFormData({ ...formData, dateProduction: e.target.value })}
+                    onChange={(event) => setFormData({ ...formData, dateProduction: event.target.value })}
                     required
                   />
                 </div>
@@ -157,23 +155,23 @@ const StockWithScanning = () => {
                   <label>Lot</label>
                   <select
                     value={formData.lotId}
-                    onChange={(e) => setFormData({ ...formData, lotId: e.target.value })}
+                    onChange={(event) => setFormData({ ...formData, lotId: event.target.value })}
                     required
                   >
-                    <option value="">Sélectionner un lot</option>
-                    {lots.filter(l => l.quantite > 0).map(l => (
-                      <option key={l.id} value={l.id}>
-                        {l.produit.nom} - {l.quantite} unités
+                    <option value="">Selectionner un lot</option>
+                    {lots.filter((lot) => lot.quantite > 0).map((lot) => (
+                      <option key={lot.id} value={lot.id}>
+                        {lot.produit.nom} - {lot.quantite} unites
                       </option>
                     ))}
                   </select>
                 </div>
                 <div className="form-group">
-                  <label>Quantité à retirer</label>
+                  <label>Quantite a retirer</label>
                   <input
                     type="number"
                     value={formData.quantite}
-                    onChange={(e) => setFormData({ ...formData, quantite: e.target.value })}
+                    onChange={(event) => setFormData({ ...formData, quantite: event.target.value })}
                     required
                   />
                 </div>
@@ -193,18 +191,18 @@ const StockWithScanning = () => {
           <thead>
             <tr>
               <th>Produit</th>
-              <th>Quantité</th>
+              <th>Quantite</th>
               <th>Date production</th>
               <th>Date expiration</th>
               <th>Statut</th>
             </tr>
           </thead>
           <tbody>
-            {lots.map(lot => {
+            {lots.map((lot) => {
               const today = new Date();
               const expDate = new Date(lot.dateExpiration);
               let statut = 'OK';
-              if (expDate < today) statut = 'Périmé';
+              if (expDate < today) statut = 'Perime';
               else if (expDate.getTime() - today.getTime() < 5 * 24 * 60 * 60 * 1000) statut = 'Alerte';
 
               return (
