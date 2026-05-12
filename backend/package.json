@@ -8,6 +8,7 @@
     "railway:start": "npx prisma db push && node src/index.js",
     "dev": "nodemon src/index.js",
     "create-admin": "node scripts/createAdmin.js",
+    "seed:test-users": "node scripts/seedTestUsers.js",
     "prisma": "npx prisma",
     "db:push": "npx prisma db push",
     "db:setup": "npm run db:push",
