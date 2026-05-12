@@ -6,7 +6,7 @@ const SearchBar = ({ onSearch, placeholder = "Rechercher..." }) => {
 
   useEffect(() => {
     onSearch(query);
-  }, [query]);
+  }, [query, onSearch]);
 
   return (
     <div className="search-bar">

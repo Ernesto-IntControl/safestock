@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { productService } from '../services/api';
 import SearchBar from '../components/SearchBar';
 import '../styles/Products.css';
@@ -19,15 +19,7 @@ const Products = () => {
   });
   const user = JSON.parse(localStorage.getItem('user'));
 
-  useEffect(() => {
-    loadProducts();
-  }, []);
-
-  useEffect(() => {
-    filterProducts(searchQuery);
-  }, [products, searchQuery]);
-
-  const loadProducts = async () => {
+  const loadProducts = useCallback(async () => {
     try {
       const response = await productService.getAllProducts();
       setProducts(response.data);
@@ -36,16 +28,24 @@ const Products = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
-  const filterProducts = (query) => {
+  useEffect(() => {
+    loadProducts();
+  }, [loadProducts]);
+
+  const filterProducts = useCallback((query) => {
     const filtered = products.filter(product =>
       product.nom.toLowerCase().includes(query.toLowerCase()) ||
       product.categorie.toLowerCase().includes(query.toLowerCase()) ||
       product.codeBarre.includes(query)
     );
     setFilteredProducts(filtered);
-  };
+  }, [products]);
+
+  useEffect(() => {
+    filterProducts(searchQuery);
+  }, [searchQuery, filterProducts]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
