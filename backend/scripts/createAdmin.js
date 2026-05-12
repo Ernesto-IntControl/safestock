@@ -1,8 +1,6 @@
-const { PrismaClient } = require('@prisma/client');
 const bcrypt = require('bcryptjs');
 require('dotenv').config();
-
-const prisma = new PrismaClient();
+const prisma = require('../src/lib/prisma');
 
 const getArg = (name) => {
   const index = process.argv.indexOf(`--${name}`);

@@ -1,7 +1,9 @@
-﻿require('dotenv').config();
-const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient();
+require('dotenv').config();
+const prisma = require('./src/lib/prisma');
+
 prisma.$connect()
   .then(() => console.log('CONNECTED'))
-  .catch(e => { console.error('CONNECT-ERROR', e.message); })
+  .catch((error) => {
+    console.error('CONNECT-ERROR', error.message);
+  })
   .finally(() => prisma.$disconnect());
