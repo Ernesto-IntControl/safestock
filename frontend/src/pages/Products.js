@@ -11,6 +11,9 @@ const Products = () => {
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
   const [formData, setFormData] = useState({
     nom: '',
     categorie: '',
@@ -50,23 +53,53 @@ const Products = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setSaving(true);
+    setError('');
+    setSuccess('');
+
     try {
-      if (editingId) {
-        await productService.updateProduct(editingId, formData);
-      } else {
-        await productService.createProduct(formData);
+      const dureeVie = Number(formData.dureeVie);
+      if (!Number.isInteger(dureeVie) || dureeVie <= 0) {
+        setError('La duree de vie doit etre un nombre entier superieur a 0.');
+        return;
       }
-      loadProducts();
+
+      const payload = {
+        nom: formData.nom.trim(),
+        categorie: formData.categorie.trim(),
+        codeBarre: formData.codeBarre.trim(),
+        dureeVie,
+        unite: formData.unite.trim()
+      };
+
+      if (editingId) {
+        await productService.updateProduct(editingId, payload);
+      } else {
+        await productService.createProduct(payload);
+      }
+      await loadProducts();
       setShowForm(false);
       setEditingId(null);
       setFormData({ nom: '', categorie: '', codeBarre: '', dureeVie: '', unite: '' });
+      setSuccess(editingId ? 'Produit modifie avec succes.' : 'Produit enregistre avec succes.');
     } catch (error) {
       console.error('Erreur:', error);
+      setError(error.response?.data?.message || 'Impossible d enregistrer le produit.');
+    } finally {
+      setSaving(false);
     }
   };
 
   const handleEdit = (product) => {
-    setFormData(product);
+    setError('');
+    setSuccess('');
+    setFormData({
+      nom: product.nom || '',
+      categorie: product.categorie || '',
+      codeBarre: product.codeBarre || '',
+      dureeVie: String(product.dureeVie || ''),
+      unite: product.unite || ''
+    });
     setEditingId(product.id);
     setShowForm(true);
   };
@@ -95,11 +128,14 @@ const Products = () => {
           <p className="page-description">Tableau de bord produit pour créer, modifier et suivre vos articles.</p>
         </div>
         {canEdit && (
-          <button onClick={() => setShowForm(true)} className="btn-primary">
+          <button onClick={() => { setError(''); setSuccess(''); setShowForm(true); }} className="btn-primary">
             <Plus size={18} /> Nouveau produit
           </button>
         )}
       </div>
+
+      {error && <div className="error">{error}</div>}
+      {success && <div className="success">{success}</div>}
 
       <div className="page-toolbar">
         <SearchBar 
@@ -151,7 +187,9 @@ const Products = () => {
               <input
                 type="number"
                 value={formData.dureeVie}
-                onChange={(e) => setFormData({ ...formData, dureeVie: parseInt(e.target.value) })}
+                min="1"
+                step="1"
+                onChange={(e) => setFormData({ ...formData, dureeVie: e.target.value })}
                 required
               />
             </div>
@@ -165,7 +203,9 @@ const Products = () => {
               />
             </div>
             <div className="form-actions">
-              <button type="submit" className="btn-primary">Enregistrer</button>
+              <button type="submit" className="btn-primary" disabled={saving}>
+                {saving ? 'Enregistrement...' : 'Enregistrer'}
+              </button>
               <button type="button" onClick={() => setShowForm(false)} className="btn-secondary">Annuler</button>
             </div>
           </form>
